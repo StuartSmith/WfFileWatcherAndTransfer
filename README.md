@@ -29,4 +29,4 @@ This service will only watch for changes on one given folder.
         - \20190402
         - \20190403     
         
-- **NUmberofDaysToKeepLogFiles:** Under the service there is a folder called Logs that stores a log file for each day there service has run.Example Value: 7
+- **NumberofDaysToKeepLogFiles:** Under the service there is a folder called **Logs** that stores a log file for each day the service has run. Example Value: 7
