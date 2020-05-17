@@ -1,6 +1,4 @@
-# WfFileWatcherAndTransfer
-WfFileWatcherAndTransfer
-
+# WfFileWatcherAndTransfer Windows Service
 ---
 A windows service that is used conjuction with SQL Server backups. After the back up of SQL server is ran for a given database, this service watches for the change to the backup folder, compresses the back up file using LZMA compression ie 7zip and then transfer it to a remote file share. 
 
