@@ -5,12 +5,12 @@ A windows service that is used conjuction with SQL Server backups. After the bac
 
 ---
 
-## Assumptions
+## Assumptions:
 
 This service will only watch for changes on one given folder. 
 
 
-# App.config Setting for Service
+## App.config Setting for Service:
 
 - **WathToWatch:** The path to watch for files being copied to. Example Value: D:\SQLBackups\
 
