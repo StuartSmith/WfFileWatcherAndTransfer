@@ -13,7 +13,7 @@ After the back up of SQL server is ran for a given database, this service watche
 This service will only watch for changes on one given folder. 
 
 
-# App.config setting for service
+# App.config Setting for Service
 
 - **WathToWatch:** The path to watch for files being copied to. Example Value: D:\SQLBackups\
 
