@@ -43,8 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DirectoryZipWatcher.cs" />
+    <Compile Include="Logging\EventLogWriter.cs" />
+    <Compile Include="Logging\FileLogWriter.cs" />
+    <Compile Include="Logging\ILogWriter.cs" />
+    <Compile Include="Logging\AllLogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WfFileWatcherEventLog.cs" />
     <Compile Include="ZipEntity.cs" />
     <Compile Include="ZipWatcherPreferences.cs" />
   </ItemGroup>

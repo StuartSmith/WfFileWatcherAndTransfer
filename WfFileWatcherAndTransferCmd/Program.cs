@@ -1,5 +1,6 @@
 ﻿using System;
 using WfFileWatcherAndTransferLib;
+using WfFileWatcherAndTransferLib.Logging;
 
 
 namespace WfFileWatcherAndTransferCmd
@@ -24,7 +25,7 @@ namespace WfFileWatcherAndTransferCmd
                                     $"Path To 7zip:              {zInit.PathTo7Zip}\n" +
                                     "---------------------------------------------------------------------";
 
-                WfFileWatcherEventLog.Instance.LogMessage(outputtext);
+               AllLogWriter.Instance.LogMessage(outputtext);
 
                 DirectoryZipWatcher dZipWatch = new DirectoryZipWatcher();
                 dZipWatch.StartWatch(zInit);
