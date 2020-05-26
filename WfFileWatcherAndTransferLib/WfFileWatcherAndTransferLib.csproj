@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods\DateTimeExtensionMethods.cs" />
     <Compile Include="DirectoryZipWatcher.cs" />
+    <Compile Include="ZipFileTransfer.cs" />
     <Compile Include="Logging\EventLogWriter.cs" />
     <Compile Include="Logging\FileLogWriter.cs" />
     <Compile Include="Logging\ILogWriter.cs" />

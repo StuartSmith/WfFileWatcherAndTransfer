@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WfFileWatcherAndTransferLib.Logging
+﻿namespace WfFileWatcherAndTransferLib.Logging
 {
     public class AllLogWriter : ILogWriter
     {

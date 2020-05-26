@@ -1,7 +1,7 @@
 ﻿using System;
+using System.IO;
 using WfFileWatcherAndTransferLib;
 using WfFileWatcherAndTransferLib.Logging;
-
 
 namespace WfFileWatcherAndTransferCmd
 {
@@ -14,8 +14,6 @@ namespace WfFileWatcherAndTransferCmd
                 ZipWatcherPreferences zInit = new ZipWatcherPreferences();
                 zInit.PopulateFromConfigurationFile();
 
-
-
                 string outputtext = "---------------------------------------------------------------------\n" +
                                     "Starting application for watching a specific folder \n" +
                                     "and then zipping the files added to said folder\n\n\n" +
@@ -23,9 +21,10 @@ namespace WfFileWatcherAndTransferCmd
                                     $"Folder to Watch:           {zInit.PathToWatch}\n" +
                                     $"Zipping Output folder:     {zInit.OutPutFolderFor7zip}\n" +
                                     $"Path To 7zip:              {zInit.PathTo7Zip}\n" +
+                                    $"Path To log file:          {Directory.GetCurrentDirectory()}\n" +
                                     "---------------------------------------------------------------------";
 
-               AllLogWriter.Instance.LogMessage(outputtext);
+                AllLogWriter.Instance.LogMessage(outputtext);
 
                 DirectoryZipWatcher dZipWatch = new DirectoryZipWatcher();
                 dZipWatch.StartWatch(zInit);
@@ -41,7 +40,6 @@ namespace WfFileWatcherAndTransferCmd
                 Console.WriteLine(e);
                 throw;
             }
-
         }
     }
 }

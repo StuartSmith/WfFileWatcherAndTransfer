@@ -56,7 +56,14 @@ namespace WfFileWatcherAndTransferLib
         private void FSWatcher_Created(object sender, FileSystemEventArgs e)
         {
             AllLogWriter.Instance.LogMessage($"\nAdding File to Queue for zip processing: {e.FullPath}");
-            _zipItemQueue.Add(new ZipEntity() { BackupFileName = e.FullPath });
+            _zipItemQueue.Add(new ZipEntity()
+            {
+                BackupFileName = e.FullPath
+            });
+        }
+
+        public void CompressFIle(ZipEntity zipEntity)
+        {
         }
 
         private async Task<bool> ZippingFiles()
@@ -68,18 +75,21 @@ namespace WfFileWatcherAndTransferLib
                 while (true)
                 {
                     var zipEntity = _zipItemQueue.Take();
+
                     zipEntity.ZipCompressionStarted = DateTime.Now;
                     UpdateZipFileNameAndPath(zipEntity);
                     AllLogWriter.Instance.LogMessage($"\nZipping file {zipEntity.BackupFileName} to {zipEntity.ZipFileName} in folder {_zipWatcherPreferences.OutPutFolderFor7zip}");
                     Call7zip(_zipWatcherPreferences, zipEntity);
 
                     //Finished Compressing file
-                    zipEntity.CopyZipFinished = DateTime.Now;
-                    zipEntity.ZipCompressionDuration = zipEntity.CopyZipFinished - zipEntity.ZipCompressionStarted;
+                    zipEntity.ZipCompressionFinished = DateTime.Now;
+                    zipEntity.ZipCompressionDuration = zipEntity.CopyZipFinished - zipEntity.ZipCompressionFinished;
 
                     var ts = zipEntity.ZipCompressionDuration;
                     string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
                     AllLogWriter.Instance.LogMessage($"\nFinished zipping file for {zipEntity.BackupFileName} to {zipEntity.ZipFileName} duration:{elapsedTime}");
+
+                    ZipFileTransfer.Instance.AddFileToTransferAsync(zipEntity,_zipWatcherPreferences);
                 }
             }
             catch (Exception e)
@@ -92,10 +102,6 @@ namespace WfFileWatcherAndTransferLib
         private void UpdateZipFileNameAndPath(ZipEntity zEntity)
         {
             var filename = Path.GetFileNameWithoutExtension(zEntity.BackupFileName);
-            filename = filename.Replace(" ","");
-            filename = filename.Replace("(", "");
-            filename = filename.Replace(")", "");
-            filename = filename.Replace("-", "");
 
             zEntity.ZipFileName = $"{Path.Combine(_zipWatcherPreferences.OutPutFolderFor7zip, filename)}.7z";
         }
@@ -109,23 +115,19 @@ namespace WfFileWatcherAndTransferLib
                 sevenZip.StartInfo.WorkingDirectory = zipWatcherPreferences.PathTo7Zip;
             }
 
-
-
             sevenZip.StartInfo.UseShellExecute = false;
             sevenZip.StartInfo.RedirectStandardOutput = true;
 
-            sevenZip.StartInfo.Arguments = $"a -m0=lzma2 -r -y {zipEntity.ZipFileName} \"{zipEntity.BackupFileName}\" ";
-            sevenZip.StartInfo.FileName = "7z.exe";
+            sevenZip.StartInfo.Arguments = $"/c {Path.Combine(zipWatcherPreferences.PathTo7Zip, "7z.exe")} a -m0=lzma2 -r -y \"{zipEntity.ZipFileName}\" \"{zipEntity.BackupFileName}\" ";
+            sevenZip.StartInfo.FileName = "cmd.exe";
             try
             {
                 FileLogWriter.Instance.LogMessage("Starting 7zip");
-                FileLogWriter.Instance.LogMessage($"7zip Commandline {Path.Combine(sevenZip.StartInfo.WorkingDirectory,"7z.exe")} {sevenZip.StartInfo.Arguments} ");
-
+                FileLogWriter.Instance.LogMessage($"7zip Commandline {Path.Combine(sevenZip.StartInfo.WorkingDirectory, "cmd.exe")} {sevenZip.StartInfo.Arguments} ");
 
                 sevenZip.Start();
                 _isSevenZipRunning = true;
 
-                
                 while (!(sevenZip.StandardOutput.EndOfStream) && _isSevenZipRunning)
                     FileLogWriter.Instance.LogMessage($"\t{sevenZip.StandardOutput.ReadLine()}");
 
@@ -134,7 +136,6 @@ namespace WfFileWatcherAndTransferLib
 
                 FileLogWriter.Instance.LogMessage($"Finished Compressing {zipEntity.ZipFileName}");
                 _isSevenZipRunning = false;
-
             }
             catch (Exception e)
             {

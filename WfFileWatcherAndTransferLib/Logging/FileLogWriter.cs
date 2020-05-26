@@ -60,12 +60,9 @@ namespace WfFileWatcherAndTransferLib.Logging
             return LogsFolder;
         }
 
-        private string CalculateLogFileName(string LogsFolder)
+        public static string CalculateLogFileName(string LogsFolder)
         {
-            DateTime ct = DateTime.Now;
-
-            return Path.Combine(LogsFolder,
-                $"TransferLog - { ct.Year:0000}-{ ct.Month:00}-{ ct.Day:00}.log");
+            return Path.Combine(LogsFolder,$"TransferLog-{DateTime.Now.GetYearMonthDay()}.log");
         }
     }
 }

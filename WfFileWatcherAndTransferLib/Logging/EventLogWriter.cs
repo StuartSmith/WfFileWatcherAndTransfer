@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WfFileWatcherAndTransferLib.Logging
 {
-    public class EventLogWriter: ILogWriter
+    public class EventLogWriter : ILogWriter
     {
         public static EventLogWriter Instance { get; } = new EventLogWriter();
 
@@ -40,13 +35,11 @@ namespace WfFileWatcherAndTransferLib.Logging
 
         public void LogMessage(string message)
         {
-            
             WfFileWatcherLog.WriteEntry(message, EventLogEntryType.Information);
         }
 
         public void LogErrorMessage(string Message)
         {
-           
             WfFileWatcherLog.WriteEntry(Message, EventLogEntryType.Error);
         }
     }
