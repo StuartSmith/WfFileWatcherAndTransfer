@@ -12,11 +12,13 @@ This service will only watch for changes on one given folder.
 
 ## App.config Setting for Service:
 
-- **WathToWatch:** The path to watch for files being copied to. Example Value: D:\SQLBackups\
+- **PathToWatch:** The path to watch for files being copied to. Example Value: D:\SQLBackups\
 
 - **PathTo7zip:** The path to where the 7zip executable file is located. Example Value: 7z.exe
 
 - **OutPutFolderFor7zip:** The path where 7zip back ups will be stored The path. Example Value: D:\SQLBackups\7zip
+
+- **EndResultPath:** The path to where 7zip back up files will finally end up once all processing has been completed. 
 
 - **NumberOfDaysTokeepZipBackups:** The number of days before the zip back ups will be remove: Example Value:1 
 
